@@ -18,7 +18,7 @@ class CustomTopo(Topo):
         # Initialize topology and default options
         Topo.__init__(self, **opts)
         # Add your logic here ...
-        core = self.addSwitch('core_cs1')
+        core = self.addSwitch('cs1')
 
         for a in range(fanout):
             aggr = self.addSwitch('a%s' % (a + 1))
@@ -32,19 +32,17 @@ class CustomTopo(Topo):
                     host = self.addHost('h%s' % (((a * fanout + e) * fanout + h) + 1))
                     self.addLink(host, edge, **linkopts3)
 
-def simple_test():
-    print("1.")
-    linkopts1 = {'bw': 50, 'delay': '5ms'}
-    linkopts2 = {'bw': 30, 'delay': '10ms'}
-    linkopts3 = {'bw': 10, 'delay': '15ms'}
-    print("2.")
+def perfTest():
+    print("Create network and run simple performance test")
+    linkopts1 = {'bw': 10, 'delay': '5ms'}
+    linkopts2 = {'bw': 10, 'delay': '5ms'}
+    linkopts3 = {'bw': 10, 'delay': '5ms'}
     topo = CustomTopo(linkopts1, linkopts2, linkopts3, fanout=2)
-
-    print("3.")
     net = Mininet(topo=topo, host=CPULimitedHost, link=TCLink)
     net.start()
+    print("Dumping host connections")
     dumpNodeConnections(net.hosts)
-    print("4.")
+    print("Testing network connectivity")
     net.pingAll()
 
     print("5.")
@@ -52,4 +50,4 @@ def simple_test():
 
 if __name__ == '__main__':
     setLogLevel('info')
-    simple_test()
+    perfTest()
