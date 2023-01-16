@@ -1,13 +1,9 @@
-'''
-Coursera:
-- Software Defined Networking (SDN) course
--- Module 3 Programming Assignment
-
-Professor: Nick Feamster
-Teaching Assistant: Muhammad Shahbaz
-'''
+#!/usr/bin/python
 
 from mininet.topo import Topo
+from mininet.net import Mininet
+from mininet.util import irange,dumpNodeConnections
+from mininet.log import 
 
 class CustomTopo(Topo):
     "Simple Data Center Topology"
