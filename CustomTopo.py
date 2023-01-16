@@ -19,7 +19,33 @@ class CustomTopo(Topo):
         Topo.__init__(self, **opts)
         
         # Add your logic here ...
-
+        # Create the root switch
+        rootSwitch = self.addSwitch('s1')
+     
+        # Create the child switches
+        childSwitches = [self.addSwitch('s{}'.format(i)) for i in irange(2, fanout+1)]
+    
+        # Create the hosts
+        hosts = [self.addHost('h{}'.format(i)) for i in irange(1, fanout**2+1)]
+    
+        # Create links between the root switch and child switches
+        for s in childSwitches:
+            self.addLink(rootSwitch, s, **linkopts)
+    
+        # Create links between the child switches and hosts
+        for s in childSwitches:
+            for h in hosts:
+                self.addLink(s, h, **linkopts)
         
-                    
-topos = { 'custom': ( lambda: CustomTopo() ) }
+def perfTest():
+    topo = CustomTopo(linkopts={'bw':10,'delay':'5ms','loss':1,'max_queue_size':1000},fanout=3)
+    net = Mininet(topo=topo, host=CPULimitedHost, link=TCLink)
+    net.start()
+    dumpNodeConnections(net.hosts)
+    net.pingAll()
+    net.iperf()
+    net.stop()
+
+if __name__ == '__main__':
+    setLogLevel('info')
+    perfTest()                    
