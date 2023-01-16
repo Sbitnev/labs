@@ -3,7 +3,7 @@
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.util import irange,dumpNodeConnections
-from mininet.log import 
+from mininet.log import setLogLevel
 
 class CustomTopo(Topo):
     "Simple Data Center Topology"
