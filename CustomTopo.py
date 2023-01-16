@@ -52,5 +52,4 @@ def simple_test():
 
 if __name__ == '__main__':
     setLogLevel('info')
-
-
+    simple_test()
