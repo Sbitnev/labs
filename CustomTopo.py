@@ -34,13 +34,23 @@ class CustomTopo(Topo):
                 self.addLink(s, h, **linkopts)
         
 def perfTest():
-    topo = CustomTopo(linkopts={'bw':10,'delay':'5ms','loss':1,'max_queue_size':1000},fanout=3)
+    print ("1. --Задаем параметры")
+    linkopts1 = {'bw':50, 'delay':'5ms'}
+    linkopts2 = {'bw':30, 'delay':'10ms'}
+    linkopts3 = {'bw':10, 'delay':'15ms'}
+    print ("2. --Реализуем нашу топологию с праметрами")
+    topo = CustomTopo(linkopts1, linkopts2, linkopts3, fanout=2)
+
+    print ("3. --Создаем сеть из нашей топологии ")
     net = Mininet(topo=topo, host=CPULimitedHost, link=TCLink)
     net.start()
     dumpNodeConnections(net.hosts)
+    print ("4. --Тестируем сеть ")
     net.pingAll()
-    net.iperf()
+
+    print ("5. --Останавливаем")
     net.stop()
+
 
 if __name__ == '__main__':
     setLogLevel('info')
